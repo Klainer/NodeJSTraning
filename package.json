@@ -1,5 +1,5 @@
 {
-  "name": "internetbillboard",
+  "name": "My first NodeJS APP",
   "version": "1.0.0",
   "description": "NodeJS server example application",
   "main": "app.js",
@@ -25,7 +25,7 @@
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "keywords": [
-    "nodejs;internetBillboard"
+    "nodejs"
   ],
   "author": "Martin Haščák",
   "license": "MIT"
