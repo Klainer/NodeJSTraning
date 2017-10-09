@@ -1,0 +1,32 @@
+{
+  "name": "internetbillboard",
+  "version": "1.0.0",
+  "description": "NodeJS server example application",
+  "main": "app.js",
+  "dependencies": {
+    "redis": "^2.8.0",
+    "winston": "^2.4.0",
+    "winston-daily-rotate-file": "^1.7.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "eslint": "^4.8.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "mocha": "^3.5.3",
+    "should": "^13.1.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "keywords": [
+    "nodejs;internetBillboard"
+  ],
+  "author": "Martin Haščák",
+  "license": "MIT"
+}
