@@ -12,11 +12,11 @@ const defaultConfig = require('../config');
 const ENV = (process.env.NODE_ENV || 'development');
 const isTestEnv = ENV === 'test';
 
-const contentTypes = {
+const contentType = {
     JSON: 'application/json',
     HTML: 'text/html'
 };
-const httpMethods = {
+const httpMethod = {
     GET: 'GET',
     POST: 'POST'
 };
@@ -64,9 +64,9 @@ function stop() {
 function _handleHttpRequest(request, response) {
 
     const { headers } = request;
-    const contentType = headers['content-type'];
+    const requestContentType = headers['content-type'];
 
-    router.registerRouteHandler("/count", httpMethods.GET, function (request, response) {
+    router.registerRouteHandler("/count", httpMethod.GET, function (request, response) {
         redisClient.get('count', function (err, reply) {
             if (err) throw err;
             response.write(reply);
@@ -75,13 +75,13 @@ function _handleHttpRequest(request, response) {
         });
     });
 
-    router.registerRouteHandler("/track", httpMethods.GET, function (request, response) {
-        response.writeHead(200, { "Content-Type": contentTypes.HTML });
+    router.registerRouteHandler("/track", httpMethod.GET, function (request, response) {
+        response.writeHead(200, { "Content-Type": contentType.HTML });
         response.end("This URL support only HTTP POST!");
     });
 
-    router.registerRouteHandler("/track", httpMethods.POST, function (request, response) {
-        if (contentType === contentTypes.JSON) {
+    router.registerRouteHandler("/track", httpMethod.POST, function (request, response) {
+        if (requestContentType === contentType.JSON) {
 
             let body = [];
 
@@ -97,22 +97,39 @@ function _handleHttpRequest(request, response) {
 
                 if (propertyExists && !isTestEnv) {
                     redisClient.incr('count', function (err, reply) {
-                        if (err) throw err;
+                        if (err) {
+                            logger.error(err);
+                            response.writeHead(500, { "Content-Type": contentType.JSON });
+                            response.end(JSON.stringify({ 
+                                success: false, 
+                                message: 'An error occurred!'
+                              }));   
+                        }
                     });
                 }
 
                 if (!isTestEnv) {
                     fs.appendFile(config.trackLogFilePath, body, function (err) {
-                        if (err) throw err;
+                        if (err) {
+                            logger.error(err);
+                            response.writeHead(500, { "Content-Type": contentType.JSON });
+                            response.end(JSON.stringify({ 
+                                success: false, 
+                                message: 'An error occurred!'
+                              }));                            
+                        }
                     });
                 }
 
-                response.writeHead(200, { "Content-Type": contentTypes.JSON });
-                response.end();
+                response.writeHead(200, { "Content-Type": contentType.JSON });
+                response.end(JSON.stringify({ 
+                    success: true, 
+                    message: 'Request was processed!'
+                  }));   
             });
         } else {
-            response.writeHead(404, { "Content-Type": contentTypes.HTML });
-            response.end("Content type must be: " + contentTypes.JSON);
+            response.writeHead(404, { "Content-Type": contentType.HTML });
+            response.end("Content type must be: " + contentType.JSON);
         }
     });
 
