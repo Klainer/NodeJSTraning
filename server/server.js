@@ -107,7 +107,7 @@ function _handleHttpRequest(request, response) {
                     });
                 }
 
-                response.writeHead(200, { "Content-Type": contentTypes.HTML });
+                response.writeHead(200, { "Content-Type": contentTypes.JSON });
                 response.end();
             });
         } else {
