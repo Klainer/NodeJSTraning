@@ -5,7 +5,7 @@ process.env.NODE_ENV = 'test'; //During the test the env variable is set to test
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
-const { httpServer } = require('../server').server;
+const { httpServer } = require('../server/server.js');
 
 chai.use(chaiHttp);
 

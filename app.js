@@ -1,6 +1,11 @@
 'use strict';
 
 const config = require('./config');
-const server = require('./server').server;
+const server = require('./server');
 
-server.start(config);
+// APP routes shoul be here not in server.js ....
+
+server.runInClusterMode(config);
+
+
+
